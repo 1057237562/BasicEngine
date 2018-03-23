@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-class MemoryUnit {//public
+public class MemoryUnit {//public
 	
 	public Map<String, Status> hardmap = new HashMap<String, Status>();
 	public boolean createStorageCache = false;
@@ -16,6 +16,14 @@ class MemoryUnit {//public
 	public long maxHeapSize = Runtime.getRuntime().totalMemory()*3/4;
 	
 	public int pattern = 0;
+	
+	public static String cacheStorge = "";
+	
+	public static MemoryUnit mInstance = new MemoryUnit();
+	
+	public static MemoryUnit getInstance() {
+		return mInstance;
+	}
 	
 	public String addCache(Object object) {
 		String UUID = System.currentTimeMillis() + "";
@@ -56,7 +64,7 @@ class MemoryUnit {//public
 	
 	public void createTempFile(Object o,String UUID) {
 		try {
-			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream("" + UUID + ".tmp"));
+			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(cacheStorge + "/" + UUID + ".tmp"));
 			os.writeObject(o);
 			os.flush();
 			os.close();
@@ -67,7 +75,7 @@ class MemoryUnit {//public
 	
 	public Object readTempFile(String UUID) {
 		try {
-			ObjectInputStream is = new ObjectInputStream(new FileInputStream("" + UUID + ".tmp"));
+			ObjectInputStream is = new ObjectInputStream(new FileInputStream(cacheStorge + "/" + UUID + ".tmp"));
 			Object o = is.readObject();
 			is.close();
 			return o;
