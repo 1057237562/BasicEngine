@@ -48,6 +48,10 @@ public class GUI
 		TextureID = MemoryUnit.getInstance().addCache(sb);
 	}
 	
+	public void setTextureID(String textureID) {
+		TextureID = textureID;
+	}
+	
 	public void onClick(float x,float y){
 		for(int i = 0;i<list.size();i++){
 			if(list.get(i).X + X <= x && list.get(i).Y + Y <= y && list.get(i).X + list.get(i).Width + X >= x && list.get(i).Y + list.get(i).Height + Y >= y){
