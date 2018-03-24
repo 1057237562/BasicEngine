@@ -67,13 +67,13 @@ public class GUI
 	public void draw(Canvas c){
 		for(int i = 0;i<list.size();i++){
 			Component com = list.get(i);
-			c.drawBitmap(com.Texture,new Rect(0,0,com.Texture.getWidth(),com.Texture.getHeight()),new Rect(X+com.X,Y+com.Y,X+com.X+com.Width,Y+com.Y+com.Height),null);
+			c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(),new Rect(0,0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()),new Rect(X+com.X,Y+com.Y,X+com.X+com.Width,Y+com.Y+com.Height),null);
 			com.draw(c);
 		}
 		
 		for(int s = 0;s<slider.size();s++){
 			Component com = slider.get(s);
-			c.drawBitmap(com.Texture,new Rect(0,0,com.Texture.getWidth(),com.Texture.getHeight()),new Rect(X+com.X,Y+com.Y,X+com.X+com.Width,Y+com.Y+com.Height),null);
+			c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(),new Rect(0,0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()),new Rect(X+com.X,Y+com.Y,X+com.X+com.Width,Y+com.Y+com.Height),null);
 			com.draw(c);
 		}
 	}
