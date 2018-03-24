@@ -4,7 +4,6 @@ import android.graphics.*;
 import android.view.*;
 import android.os.*;
 import com.basicengine.util.*;
-import com.basicengine.util.memory.MemoryUnit;
 
 public class Controller extends GUI
 {
@@ -20,8 +19,7 @@ public class Controller extends GUI
 		{
 			// TODO: Implement this method
 			super.handleMessage(msg);
-			//ls.onRoll(r.X-X-Controller.this.Width/2+((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getWidth()/2,r.Y-Y-Controller.this.Height/2+((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getHeight()/2);
-			ls.onRoll(r.X-X-Controller.this.Width/2+((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getWidth()/2,r.Y-Y-Controller.this.Height/2+((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getHeight()/2);
+			ls.onRoll(r.X-X-Controller.this.Width/2+r.Texture.getWidth()/2,r.Y-Y-Controller.this.Height/2+r.Texture.getHeight()/2);
 		}
 	};
 	
@@ -44,8 +42,8 @@ public class Controller extends GUI
 		//super.onTouch(X,Y,action);
 		r.onTouch(X,Y,action);
 		if(action == MotionEvent.ACTION_UP){
-			r.X = this.X+Width/2-((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getWidth()/2;
-			r.Y = this.Y+Height/2-((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap().getHeight()/2;
+			r.X = this.X+Width/2-r.Texture.getWidth()/2;
+			r.Y = this.Y+Height/2-r.Texture.getHeight()/2;
 			active = false;
 		}else{
 			active = true;
@@ -61,12 +59,12 @@ public class Controller extends GUI
 		// TODO Auto-generated method stub
 		for(int i = 0;i<list.size();i++){
 			Component com = list.get(i);
-			c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(),com.X,com.Y,null);
+			c.drawBitmap(com.Texture,com.X,com.Y,null);
 		}
 		
 		for(int s = 0;s<slider.size();s++){
 			Component com = slider.get(s);
-			c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(),com.X,com.Y,null);
+			c.drawBitmap(com.Texture,com.X,com.Y,null);
 		}
 	}
 }
@@ -97,18 +95,18 @@ class Roller extends Component{
 			Y = (int)((y-parent.Y-parent.Height/2)*((parent.Width+parent.Height)/(4*distance))+parent.Y+parent.Height/2-height/2);
 		}
 		if(action == MotionEvent.ACTION_UP){
-			X = parent.X+parent.Width/2-((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap().getWidth()/2;
-			Y = parent.Y+parent.Height/2-((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap().getHeight()/2;
+			X = parent.X+parent.Width/2-Texture.getWidth()/2;
+			Y = parent.Y+parent.Height/2-Texture.getHeight()/2;
 		}
 	}
 	
 	public void setHeight(int h){
 		height = h;
-		((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).setBitmap(BitmapModifier.modify(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap(),h,width));
+		Texture = BitmapModifier.modify(Texture,h,width);
 	}
 	
 	public void setWidth(int w){
 		width = w;
-		((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).setBitmap(BitmapModifier.modify(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap(),height,w));
+		Texture = BitmapModifier.modify(Texture,height,w);
 	}
 }

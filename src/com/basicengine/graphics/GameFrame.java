@@ -10,8 +10,6 @@ import java.util.*;
 import android.util.*;
 import android.os.*;
 import com.basicengine.entity.*;
-import com.basicengine.util.SerializbaleBitmap;
-import com.basicengine.util.memory.MemoryUnit;
 
 public class GameFrame extends View {
 	public Bitmap MapBackground;
@@ -59,8 +57,8 @@ public class GameFrame extends View {
 									ArrayList<RenderingObject> RenderObject = Layout.get(l);
 									for (int i = 0; i < RenderObject.size(); i++) {
 										RenderingObject r = RenderObject.get(i);
-										if (r.TextureID != null) {
-											clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(), r.X - VisionX, r.Y - VisionY, null);
+										if (r.Texture != null) {
+											clip.drawBitmap(r.Texture, r.X - VisionX, r.Y - VisionY, null);
 										}
 										r.draw(clip);
 										r = null;
@@ -72,8 +70,8 @@ public class GameFrame extends View {
 								for (int g = 0; g < gui.size(); g++) {
 									GUI gi = gui.get(g);
 									if (gi.Visible) {
-										if (gi.TextureID != null) {
-											clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
+										if (gi.Texture != null) {
+											clip.drawBitmap(gi.Texture, gi.X, gi.Y, null);
 										}
 										gi.draw(clip);
 									}
@@ -239,8 +237,8 @@ public class GameFrame extends View {
 			ArrayList<RenderingObject> RenderObject = Layout.get(l);
 			for (int i = 0; i < RenderObject.size(); i++) {
 				RenderingObject r = RenderObject.get(i);
-				if (r.TextureID != null) {
-					canvas.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(), r.X - VisionX, r.Y - VisionY, null);
+				if (r.Texture != null) {
+					canvas.drawBitmap(r.Texture, r.X - VisionX, r.Y - VisionY, null);
 				}
 				r.draw(canvas);
 				r = null;
@@ -252,8 +250,8 @@ public class GameFrame extends View {
 		for (int g = 0; g < gui.size(); g++) {
 			GUI gi = gui.get(g);
 			if (gi.Visible) {
-				if (gi.TextureID != null) {
-					canvas.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
+				if (gi.Texture != null) {
+					canvas.drawBitmap(gi.Texture, gi.X, gi.Y, null);
 				}
 				gi.draw(canvas);
 			}

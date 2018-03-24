@@ -33,7 +33,7 @@ public class CTextView extends GUI{
         background = bg;
         Canvas canvas = new Canvas(bitmap);
         canvas.drawText(text, 0, rect.height(), textPaint);
-        setTexture(bitmap);
+        Texture = bitmap;
         Width = rect.width();
         Height = rect.height();
 	}
@@ -49,7 +49,7 @@ public class CTextView extends GUI{
         }
         Canvas canvas = new Canvas(bitmap);
         canvas.drawText(text, 0, rect.height(), textPaint);
-        setTexture(bitmap);
+        Texture = bitmap;
         Width = rect.width();
         Height = rect.height();
 	}
