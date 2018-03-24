@@ -46,6 +46,10 @@ public class RenderingObject
 		TextureID = textureID;
 	}
 	
+	public Bitmap getTexture() {
+		return ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap();
+	}
+	
 	public void draw(Canvas c) {
 		
 	}

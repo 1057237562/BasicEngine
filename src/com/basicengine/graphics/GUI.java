@@ -52,6 +52,10 @@ public class GUI
 		TextureID = textureID;
 	}
 	
+	public Bitmap getTexture() {
+		return ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap();
+	}
+	
 	public void onClick(float x,float y){
 		for(int i = 0;i<list.size();i++){
 			if(list.get(i).X + X <= x && list.get(i).Y + Y <= y && list.get(i).X + list.get(i).Width + X >= x && list.get(i).Y + list.get(i).Height + Y >= y){

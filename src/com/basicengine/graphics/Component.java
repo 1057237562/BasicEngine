@@ -60,6 +60,10 @@ public class Component
 		TextureID = textureID;
 	}
 	
+	public Bitmap getTexture() {
+		return ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(TextureID)).getBitmap();
+	}
+	
 	public void setWidth(int width) {
 		Width = width;
 	}
