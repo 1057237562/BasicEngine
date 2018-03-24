@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 public class MemoryUnit {//public
 	
 	public Map<String, Status> hardmap = new HashMap<String, Status>();
-	public boolean createStorageCache = true;
+	public boolean createStorageCache = false;
 	
 	public long maxHeapSize = Runtime.getRuntime().totalMemory()*3/4;
 	

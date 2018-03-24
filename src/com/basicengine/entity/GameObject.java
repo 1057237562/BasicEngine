@@ -16,7 +16,7 @@ public class GameObject extends RenderingObject
 	
 	public GameObject newInstance(int x,int y){
 		GameObject n = new GameObject(x,y,Height,Width);
-		n.setTextureID(TextureID);
+		n.setTexture(Texture);
 		ArrayList<Script> cs = new ArrayList<Script>(Arrays.asList(new Script[script.size()]));
 		Collections.copy(cs, script);
 		n.script = cs;
@@ -25,7 +25,7 @@ public class GameObject extends RenderingObject
 	
 	public GameObject newInstance(){
 		GameObject n = new GameObject(X,Y,Height,Width);
-		n.setTextureID(TextureID);
+		n.setTexture(Texture);
 		ArrayList<Script> cs = new ArrayList<Script>(Arrays.asList(new Script[script.size()]));
 		Collections.copy(cs, script);
 		n.script = cs;

@@ -22,7 +22,7 @@ public class Component
 	public Component(int x,int y,Bitmap t){
 		X=x;
 		Y=y;
-		setTexture(t);
+		Texture = t;
 		if(t != null) {
 			Width = t.getWidth();
 			Height = t.getHeight();
@@ -41,10 +41,6 @@ public class Component
 		SerializbaleBitmap sb = new SerializbaleBitmap();
 		sb.setBitmap(t);
 		TextureID = MemoryUnit.getInstance().addCache(sb);
-		if(t != null) {
-			Width = t.getWidth();
-			Height = t.getHeight();
-		}
 	}
 	
 	@Deprecated

@@ -11,7 +11,7 @@ public class RenderingObject
 	public int Width;
 	public int Height;
 	@Deprecated
-	Bitmap Texture;
+	public Bitmap Texture;
 	public int layout;
 	public boolean active;
 	public String TextureID;
@@ -40,10 +40,6 @@ public class RenderingObject
 		SerializbaleBitmap sb = new SerializbaleBitmap();
 		sb.setBitmap(t);
 		TextureID = MemoryUnit.getInstance().addCache(sb);
-	}
-	
-	public void setTextureID(String textureID) {
-		TextureID = textureID;
 	}
 	
 	public void draw(Canvas c) {
