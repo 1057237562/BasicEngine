@@ -2,16 +2,12 @@ package com.basicengine.graphics;
 import android.graphics.*;
 import java.util.*;
 
-import com.basicengine.util.SerializbaleBitmap;
-import com.basicengine.util.memory.MemoryUnit;
-
 public class GUI
 {
 	public int X;
 	public int Y;
 	public boolean Visible = false;
-	@Deprecated
-	Bitmap Texture;
+	public Bitmap Texture;
 	public ArrayList<Component> list = new ArrayList<Component>();
 	//Only Listen Touch Event
 	public ArrayList<Component> slider = new ArrayList<Component>();
@@ -22,30 +18,20 @@ public class GUI
 	public boolean active = false;
 	public boolean block = true;
 	
-	public String TextureID;
-	
 	public GUI(int x,int y,int h,int w,Bitmap t){
 		X = x;
 		Y = y;
 		Height = h;
 		Width = w;
-		//Texture = t;
-		setTexture(t);
+		Texture = t;
 	}
 	
 	public void show(){
 		Visible = true;
 	}
 	
-	@Deprecated
-	public void setTexture_D(Bitmap t){
+	public void setTexture(Bitmap t){
 		Texture = t;
-	}
-
-	public void setTexture(Bitmap t) {
-		SerializbaleBitmap sb = new SerializbaleBitmap();
-		sb.setBitmap(t);
-		TextureID = MemoryUnit.getInstance().addCache(sb);
 	}
 	
 	public void onClick(float x,float y){

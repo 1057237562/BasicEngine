@@ -1,7 +1,4 @@
 package com.basicengine.graphics;
-import com.basicengine.util.SerializbaleBitmap;
-import com.basicengine.util.memory.MemoryUnit;
-
 import android.graphics.*;
 
 public class Component
@@ -12,12 +9,9 @@ public class Component
 	public int Width;
 	public int Height;
 	
-	@Deprecated
-	Bitmap Texture;
+	public Bitmap Texture;
 	
 	public GUI Parent;
-	
-	public String TextureID;
 	
 	public Component(int x,int y,Bitmap t){
 		X=x;
@@ -37,14 +31,7 @@ public class Component
 		
 	}
 	
-	public void setTexture(Bitmap t) {
-		SerializbaleBitmap sb = new SerializbaleBitmap();
-		sb.setBitmap(t);
-		TextureID = MemoryUnit.getInstance().addCache(sb);
-	}
-	
-	@Deprecated
-	public void setTexture_D(Bitmap texture) {
+	public void setTexture(Bitmap texture) {
 		Texture = texture;
 		if(texture != null) {
 			Width = texture.getWidth();

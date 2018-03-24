@@ -1,7 +1,4 @@
 package com.basicengine.graphics;
-import com.basicengine.util.SerializbaleBitmap;
-import com.basicengine.util.memory.MemoryUnit;
-
 import android.graphics.*;
 
 public class RenderingObject
@@ -10,11 +7,9 @@ public class RenderingObject
 	public int Y;
 	public int Width;
 	public int Height;
-	@Deprecated
 	public Bitmap Texture;
 	public int layout;
 	public boolean active;
-	public String TextureID;
 	
 	public RenderingObject(int x,int y,int h,int w){
 		X = x;
@@ -31,15 +26,8 @@ public class RenderingObject
 		Y = y;
 	}
 	
-	@Deprecated
-	public void setTexture_D(Bitmap t){
+	public void setTexture(Bitmap t){
 		Texture = BitmapModifier.modify(t,Height,Width);
-	}
-	
-	public void setTexture(Bitmap t) {
-		SerializbaleBitmap sb = new SerializbaleBitmap();
-		sb.setBitmap(t);
-		TextureID = MemoryUnit.getInstance().addCache(sb);
 	}
 	
 	public void draw(Canvas c) {

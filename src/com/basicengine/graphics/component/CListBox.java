@@ -12,9 +12,6 @@ import android.graphics.Picture;
 import android.graphics.Rect;
 import android.graphics.Bitmap.Config;
 
-import com.basicengine.util.memory.MemoryUnit;
-import com.basicengine.util.SerializbaleBitmap;
-
 public class CListBox extends GUI {
 
 	public ArrayList<Component> items = new ArrayList<Component>();
@@ -72,7 +69,7 @@ public class CListBox extends GUI {
 		}
 		for (int s = 0; s < items.size(); s++) {
 			Component com = items.get(s);
-			clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0, 0, ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(), ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()),
+			clip.drawBitmap(com.Texture, new Rect(0, 0, com.Texture.getWidth(), com.Texture.getHeight()),
 			        new Rect(com.X, com.Y, com.X + com.Width, com.Y + com.Height), null);
 			com.draw(clip);
 		}
@@ -137,7 +134,7 @@ public class CListBox extends GUI {
 		}
 		for (int s = 0; s < items.size(); s++) {
 			Component com = items.get(s);
-			clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0, 0, ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(), ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()),
+			clip.drawBitmap(com.Texture, new Rect(0, 0, com.Texture.getWidth(), com.Texture.getHeight()),
 			        new Rect(com.X, com.Y, com.X + com.Width, com.Y + com.Height), null);
 			com.draw(clip);
 		}
@@ -147,7 +144,7 @@ public class CListBox extends GUI {
 		picture.draw(canvas);
 		picture = null;
 		System.gc();
-		setTexture(bitmap);
+		Texture = bitmap;
 	}
 
 	public void setColumnWidth(int columnWidth) {
@@ -189,50 +186,50 @@ public class CListBox extends GUI {
 	}
 	/*switch (direction) {
 		case DIRECTION_HORIZONTAL:
-			if(nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight() > Height) {
+			if(nY + com.Texture.getHeight() > Height) {
 				nY = mY;
 				nX += maxLength;// Add With padding
 				maxLength = 0;
 			}
-			if(nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth() <= X) {
+			if(nX + com.Texture.getWidth() <= X) {
 				break;
 			}
 			if(nX < X) {
-				int availableWidth = nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth() - X;
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth() - availableWidth, 0,availableWidth,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()) ,new Rect(X, Y + nY, X + availableWidth,Y + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()), null);
-			}else if(nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth() <= Width) {
-				if(maxLength < ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth()) {
-					maxLength = ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth();
+				int availableWidth = nY + com.Texture.getWidth() - X;
+				c.drawBitmap(com.Texture, new Rect(com.Texture.getWidth() - availableWidth, 0,availableWidth,com.Texture.getHeight()) ,new Rect(X, Y + nY, X + availableWidth,Y + com.Texture.getHeight()), null);
+			}else if(nX + com.Texture.getWidth() <= Width) {
+				if(maxLength < com.Texture.getWidth()) {
+					maxLength = com.Texture.getWidth();
 				}
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0,0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth()), new Rect(X + nX, Y + nY,X + nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),Y + nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()), null);
-				nY += ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight(); // Add With padding
+				c.drawBitmap(com.Texture, new Rect(0,0,com.Texture.getWidth(),com.Texture.getWidth()), new Rect(X + nX, Y + nY,X + nX + com.Texture.getWidth(),Y + nY + com.Texture.getHeight()), null);
+				nY += com.Texture.getHeight(); // Add With padding
 			}else {
-				int availableWidth = Width - nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth();
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0,0,availableWidth,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()) ,new Rect(X + nX, Y + nY, X + nX + availableWidth,Y + nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()), null);
+				int availableWidth = Width - nX + com.Texture.getWidth();
+				c.drawBitmap(com.Texture, new Rect(0,0,availableWidth,com.Texture.getHeight()) ,new Rect(X + nX, Y + nY, X + nX + availableWidth,Y + nY + com.Texture.getHeight()), null);
 			}
 		break;
 	
 		case DIRECTION_VERTICAL:
-			if(nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth() > Width) {
+			if(nX + com.Texture.getWidth() > Width) {
 				nX = mX;
 				nY += maxLength;// Add With padding
 				maxLength = 0;
 			}
-			if(nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight() <= Y) {
+			if(nY + com.Texture.getHeight() <= Y) {
 				break;
 			}
 			if(nY < Y) {
-				int availableHeight = nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight() - Y;
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight() - availableHeight ,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),availableHeight) ,new Rect(X + nX, Y, X + nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),Y + availableHeight), null);
-			}else if(nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight() <= Height) {
-				if(maxLength < ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()) {
-					maxLength = ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight();
+				int availableHeight = nY + com.Texture.getHeight() - Y;
+				c.drawBitmap(com.Texture, new Rect(0,com.Texture.getHeight() - availableHeight ,com.Texture.getWidth(),availableHeight) ,new Rect(X + nX, Y, X + nX + com.Texture.getWidth(),Y + availableHeight), null);
+			}else if(nY + com.Texture.getHeight() <= Height) {
+				if(maxLength < com.Texture.getHeight()) {
+					maxLength = com.Texture.getHeight();
 				}
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0,0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()), new Rect(X + nX, Y + nY,X + nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),Y + nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()), null);
-				nX += ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(); // Add With padding
+				c.drawBitmap(com.Texture, new Rect(0,0,com.Texture.getWidth(),com.Texture.getHeight()), new Rect(X + nX, Y + nY,X + nX + com.Texture.getWidth(),Y + nY + com.Texture.getHeight()), null);
+				nX += com.Texture.getWidth(); // Add With padding
 			}else {
-				int availableHeight = Height - nY + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight();
-				c.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0,0,((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),availableHeight) ,new Rect(X + nX, Y + nY, X + nX + ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(),Y + nY + availableHeight), null);
+				int availableHeight = Height - nY + com.Texture.getHeight();
+				c.drawBitmap(com.Texture, new Rect(0,0,com.Texture.getWidth(),availableHeight) ,new Rect(X + nX, Y + nY, X + nX + com.Texture.getWidth(),Y + nY + availableHeight), null);
 			}
 		break;
 	}*/
