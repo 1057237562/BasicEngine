@@ -56,10 +56,6 @@ public class Component
 		}
 	}
 	
-	public void setTextureID(String textureID) {
-		TextureID = textureID;
-	}
-	
 	public void setWidth(int width) {
 		Width = width;
 	}
