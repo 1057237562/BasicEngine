@@ -31,11 +31,11 @@ public class GameFrame extends View {
 	boolean blocking = false;
 
 	long lastUpdate = System.currentTimeMillis();
-	boolean useDrawThread = false;
+	public boolean useDrawThread = false;
 	Thread graphicThread;
 	Bitmap vision;
 	boolean DrawingQueue = false;
-
+	
 	public void setUseDrawThread(boolean useDrawThread) {
 		this.useDrawThread = useDrawThread;
 		if (useDrawThread) {
