@@ -1,17 +1,26 @@
 package com.basicengine.graphics;
 
-import android.view.*;
-import android.annotation.SuppressLint;
-import android.content.*;
-import android.graphics.*;
-import android.graphics.Bitmap.Config;
+import java.util.ArrayList;
 
-import java.util.*;
-import android.util.*;
-import android.os.*;
-import com.basicengine.entity.*;
+import com.basicengine.entity.GameObject;
 import com.basicengine.util.SerializbaleBitmap;
 import com.basicengine.util.memory.MemoryUnit;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Picture;
+import android.graphics.Rect;
+import android.os.Debug;
+import android.os.Handler;
+import android.os.Message;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 
 public class GameFrame extends View {
 	public Bitmap MapBackground;
@@ -31,11 +40,11 @@ public class GameFrame extends View {
 	boolean blocking = false;
 
 	long lastUpdate = System.currentTimeMillis();
-	public boolean useDrawThread = false;
+	boolean useDrawThread = false;
 	Thread graphicThread;
 	Bitmap vision;
 	boolean DrawingQueue = false;
-	
+
 	public void setUseDrawThread(boolean useDrawThread) {
 		this.useDrawThread = useDrawThread;
 		if (useDrawThread) {
@@ -52,7 +61,11 @@ public class GameFrame extends View {
 
 								//Drawing Component
 								if (MapBackground != null) {
-									clip.drawBitmap(MapBackground, -VisionX, -VisionY, null);
+									//clip.drawBitmap(MapBackground, -VisionX, -VisionY, null);
+									clip.drawBitmap(MapBackground,
+									        new Rect(VisionX, VisionY, VisionX + getMeasuredWidth(),
+									                VisionY + getMeasuredHeight()),
+									        new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight()), null); // Problem
 								}
 
 								for (int l = 0; l < Layout.size(); l++) {
@@ -60,7 +73,10 @@ public class GameFrame extends View {
 									for (int i = 0; i < RenderObject.size(); i++) {
 										RenderingObject r = RenderObject.get(i);
 										if (r.TextureID != null) {
-											clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(), r.X - VisionX, r.Y - VisionY, null);
+											clip.drawBitmap(
+											        ((SerializbaleBitmap) MemoryUnit.getInstance()
+											                .getFromCache(r.TextureID)).getBitmap(),
+											        r.X - VisionX, r.Y - VisionY, null);
 										}
 										r.draw(clip);
 										r = null;
@@ -73,7 +89,8 @@ public class GameFrame extends View {
 									GUI gi = gui.get(g);
 									if (gi.Visible) {
 										if (gi.TextureID != null) {
-											clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
+											clip.drawBitmap(((SerializbaleBitmap) MemoryUnit.getInstance()
+											        .getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
 										}
 										gi.draw(clip);
 									}
@@ -222,11 +239,13 @@ public class GameFrame extends View {
 		canvas.scale(scalex, scaley);
 
 		if (useDrawThread) {
-			if(!DrawingQueue) {
+			if (!DrawingQueue) {
 				DrawingQueue = true;
 			}else {
-				canvas.drawBitmap(vision, 0, 0, null);
 				DrawingQueue = false;
+			}
+			if (vision != null) {
+				canvas.drawBitmap(vision, 0, 0, null);
 			}
 			return;
 		}
@@ -240,7 +259,9 @@ public class GameFrame extends View {
 			for (int i = 0; i < RenderObject.size(); i++) {
 				RenderingObject r = RenderObject.get(i);
 				if (r.TextureID != null) {
-					canvas.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(), r.X - VisionX, r.Y - VisionY, null);
+					canvas.drawBitmap(
+					        ((SerializbaleBitmap) MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(),
+					        r.X - VisionX, r.Y - VisionY, null);
 				}
 				r.draw(canvas);
 				r = null;
@@ -253,7 +274,9 @@ public class GameFrame extends View {
 			GUI gi = gui.get(g);
 			if (gi.Visible) {
 				if (gi.TextureID != null) {
-					canvas.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
+					canvas.drawBitmap(
+					        ((SerializbaleBitmap) MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(),
+					        gi.X, gi.Y, null);
 				}
 				gi.draw(canvas);
 			}

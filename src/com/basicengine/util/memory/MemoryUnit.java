@@ -1,5 +1,6 @@
 package com.basicengine.util.memory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
@@ -13,7 +14,7 @@ public class MemoryUnit {//public
 	public Map<String, Status> hardmap = new HashMap<String, Status>();
 	public boolean createStorageCache = true;
 	
-	public long maxHeapSize = Runtime.getRuntime().totalMemory()*3/4;
+	public long maxHeapSize = Runtime.getRuntime().totalMemory()*7/8;
 	
 	public int pattern = 0;
 	
@@ -39,7 +40,7 @@ public class MemoryUnit {//public
 			float maxWeights = 0;
 			for (Entry<String, Status> e: hardmap.entrySet()) {
 				Status s = e.getValue();
-				float userate = (System.currentTimeMillis() - s.startTime)/(s.useage * 100);
+				float userate = s.useage == 0 ? 2 : (System.currentTimeMillis() - s.startTime)/(s.useage * 100);
 				float memoryfit = s.size/memorymissing;
 				float w = memoryfit >= 1 ? 3 - memoryfit : memoryfit +  userate > 2 ? 2 : userate;
 				if(maxWeights < w) {
@@ -64,12 +65,17 @@ public class MemoryUnit {//public
 	
 	public void createTempFile(Object o,String UUID) {
 		try {
+			File path = new File(cacheStorge);
+			if (!path.exists()) {
+				path.mkdirs();
+			}
 			ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(cacheStorge + "/" + UUID + ".tmp"));
 			os.writeObject(o);
 			os.flush();
 			os.close();
 		}catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
@@ -81,6 +87,7 @@ public class MemoryUnit {//public
 			return o;
 		}catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -90,6 +97,6 @@ public class MemoryUnit {//public
 		if(s != null) {
 			return s.object;
 		}
-		return readTempFile(UUID);
+		return readTempFile(UUID);  // casing problems
 	}
 }
