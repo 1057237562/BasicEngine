@@ -56,7 +56,7 @@ public class GameFrame extends View {
 						// TODO Auto-generated method stub
 						while (true) {
 							if (DrawingQueue) {
-								Picture picture = new Picture();
+								Picture picture = new Picture();//Drawing in thread
 								Canvas clip = picture.beginRecording(getMeasuredWidth(), getMeasuredHeight());
 
 								//Drawing Component
@@ -73,10 +73,15 @@ public class GameFrame extends View {
 									for (int i = 0; i < RenderObject.size(); i++) {
 										RenderingObject r = RenderObject.get(i);
 										if (r.TextureID != null) {
-											clip.drawBitmap(
+											try {
+												clip.drawBitmap(
 											        ((SerializbaleBitmap) MemoryUnit.getInstance()
 											                .getFromCache(r.TextureID)).getBitmap(),
 											        r.X - VisionX, r.Y - VisionY, null);
+											} catch (Exception e) { // Temporary
+												// TODO: handle exception
+												//Log.e("com.basicengine", r.TextureID);
+											}
 										}
 										r.draw(clip);
 										r = null;
@@ -89,19 +94,19 @@ public class GameFrame extends View {
 									GUI gi = gui.get(g);
 									if (gi.Visible) {
 										if (gi.TextureID != null) {
-											clip.drawBitmap(((SerializbaleBitmap) MemoryUnit.getInstance()
-											        .getFromCache(gi.TextureID)).getBitmap(), gi.X, gi.Y, null);
+											try {
+												clip.drawBitmap(
+												        ((SerializbaleBitmap) MemoryUnit.getInstance()
+												                .getFromCache(gi.TextureID)).getBitmap(),
+												        gi.X, gi.Y, null);
+											} catch (Exception e) { // Temporary
+												// TODO: handle exception
+												//Log.e("com.basicengine", gi.TextureID);
+											}
 										}
 										gi.draw(clip);
 									}
 									gi = null;
-								}
-
-								//Debug
-								if (debug) {
-									String text = getMemory() + "";
-									clip.drawText(text, 0, getMeasuredHeight(), debug_paint);
-									text = null;
 								}
 								//Ending
 
@@ -236,16 +241,23 @@ public class GameFrame extends View {
 		// TODO: Implement this method
 		super.onDraw(canvas);
 
+		//Debug - Memory Output
+
 		canvas.scale(scalex, scaley);
 
 		if (useDrawThread) {
 			if (!DrawingQueue) {
 				DrawingQueue = true;
-			}else {
+			} else {
 				DrawingQueue = false;
 			}
 			if (vision != null) {
 				canvas.drawBitmap(vision, 0, 0, null);
+				if (debug) {
+					String text = getMemory() + "";
+					canvas.drawText(text, 0, getMeasuredHeight(), debug_paint);
+					text = null;
+				}
 			}
 			return;
 		}
@@ -259,9 +271,14 @@ public class GameFrame extends View {
 			for (int i = 0; i < RenderObject.size(); i++) {
 				RenderingObject r = RenderObject.get(i);
 				if (r.TextureID != null) {
-					canvas.drawBitmap(
-					        ((SerializbaleBitmap) MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(),
-					        r.X - VisionX, r.Y - VisionY, null);
+					try {
+						canvas.drawBitmap(
+						        ((SerializbaleBitmap) MemoryUnit.getInstance().getFromCache(r.TextureID)).getBitmap(),
+						        r.X - VisionX, r.Y - VisionY, null);
+					} catch (Exception e) {
+						// TODO: handle exception
+
+					}
 				}
 				r.draw(canvas);
 				r = null;
@@ -274,16 +291,19 @@ public class GameFrame extends View {
 			GUI gi = gui.get(g);
 			if (gi.Visible) {
 				if (gi.TextureID != null) {
-					canvas.drawBitmap(
+					try {
+						canvas.drawBitmap(
 					        ((SerializbaleBitmap) MemoryUnit.getInstance().getFromCache(gi.TextureID)).getBitmap(),
 					        gi.X, gi.Y, null);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
 				}
 				gi.draw(canvas);
 			}
 			gi = null;
 		}
 
-		//Debug
 		if (debug) {
 			String text = getMemory() + "";
 			canvas.drawText(text, 0, getMeasuredHeight(), debug_paint);
@@ -379,6 +399,10 @@ public class GameFrame extends View {
 		update = new ArrayList<Handler>();
 		MapBackground = null;
 		addLayout();
+	}
+
+	public void setDebugPaint(Paint debug_paint) {
+		this.debug_paint = debug_paint;
 	}
 
 }
