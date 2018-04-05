@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.basicengine.graphics.opengl.GLBitmap;
 import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 
 import android.graphics.Bitmap;
@@ -71,23 +72,18 @@ public class BitmapCache {
 	}
 
 	private void addBitmapToTexture(int index, Bitmap bitmap, Position where) {
-		gl10.glClearColor(0f, 0f, 0f, 0f);
+		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl10.glTranslatef(0, 0, 0.0f);
-		gl10.glBindTexture(GL_TEXTURE[index], textureid.get(index));
-		gl10.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4); // get olds pic
+		GLBitmap oldBitmap = new GLBitmap(gl10, GL_TEXTURE[index], textureid.get(index)); // get olds pic
+		oldBitmap.draw(0, 0);
 
-		gl10.glEnable(GL10.GL_TEXTURE_2D);
-		int[] textures = new int[1];
-		gl10.glGenTextures(1, textures, 0);
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		gl10.glTranslatef(where.X, where.Y, 0.0f); //Draw picture into specific place
-		gl10.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		gl10.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);// drawing new pics
+		GLBitmap glBitmap = new GLBitmap(gl10, bitmap);
+		glBitmap.draw(where.X, where.Y);
 
 		Bitmap btm = mbgr.getContent(0, 0, size, size); // get mixed pic
 		int[] newtexture = new int[1];
 		gl10.glGenTextures(1, newtexture, 0);
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, btm, 0);// update into texture
+		GLUtils.texImage2D(GL_TEXTURE[index], 0, btm, 0);// update into texture
 		textureid.set(index, newtexture[0]);
 	}
 
@@ -145,10 +141,8 @@ public class BitmapCache {
 
 	public Bitmap getBitmap(String UUID) {
 		Content c = bmp.get(UUID);
-		gl10.glClearColor(0, 0, 0, 0);
-		gl10.glTranslatef(0, 0, 0.0f);
-		gl10.glBindTexture(GL_TEXTURE[c.index], textureid.get(c.index)); // draw texture into drawer
-		gl10.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, 4);
+		GLBitmap gBitmap = new GLBitmap(gl10, GL_TEXTURE[c.index], textureid.get(c.index));
+		gBitmap.draw(0, 0);
 		return mbgr.getContent(c.rect.left, c.rect.top, c.rect.right - c.rect.left, c.rect.bottom - c.rect.top); // get allocated area's image content
 	}
 

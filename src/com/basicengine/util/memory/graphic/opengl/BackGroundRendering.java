@@ -23,7 +23,7 @@ public class BackGroundRendering {
 	int attribListPbuffer[] = { EGL10.EGL_WIDTH, 512, EGL10.EGL_HEIGHT, 512, EGL10.EGL_NONE };
 
 	public GL10 gl10;
-	public int size;
+	public int size = 512;
 	
 	public BackGroundRendering() {
 		initEGL();
@@ -47,38 +47,39 @@ public class BackGroundRendering {
 		EGLConfig mEglConfig = configs[0]; // creating background drawing unit
 		EGLContext mEglContext = mEgl.eglCreateContext(mEglDisplay, mEglConfig, EGL10.EGL_NO_CONTEXT, null);
 		if (mEglContext == EGL10.EGL_NO_CONTEXT) {
-			Log.d("ERROR:", "EGL_NO_CONTEXT");
+			Log.d("com.basicengine", "EGL_NO_CONTEXT");
 		}
 		EGLSurface mEglPBSurface = mEgl.eglCreatePbufferSurface(mEglDisplay, mEglConfig, attribListPbuffer);
 		if (mEglPBSurface == EGL10.EGL_NO_SURFACE) {
 			int ec = mEgl.eglGetError();
 			if (ec == EGL10.EGL_BAD_DISPLAY) {
-				Log.d("ERROR:", "EGL_BAD_DISPLAY");
+				Log.d("com.basicengine", "EGL_BAD_DISPLAY");
 			}
 			if (ec == EGL10.EGL_BAD_DISPLAY) {
-				Log.d("ERROR:", "EGL_BAD_DISPLAY");
+				Log.d("com.basicengine", "EGL_BAD_DISPLAY");
 			}
 			if (ec == EGL10.EGL_NOT_INITIALIZED) {
-				Log.d("ERROR:", "EGL_NOT_INITIALIZED");
+				Log.d("com.basicengine", "EGL_NOT_INITIALIZED");
 			}
 			if (ec == EGL10.EGL_BAD_CONFIG) {
-				Log.d("ERROR:", "EGL_BAD_CONFIG");
+				Log.d("com.basicengine", "EGL_BAD_CONFIG");
 			}
 			if (ec == EGL10.EGL_BAD_ATTRIBUTE) {
-				Log.d("ERROR:", "EGL_BAD_ATTRIBUTE");
+				Log.d("com.basicengine", "EGL_BAD_ATTRIBUTE");
 			}
 			if (ec == EGL10.EGL_BAD_ALLOC) {
-				Log.d("ERROR:", "EGL_BAD_ALLOC");
+				Log.d("com.basicengine", "EGL_BAD_ALLOC");
 			}
 			if (ec == EGL10.EGL_BAD_MATCH) {
-				Log.d("ERROR:", "EGL_BAD_MATCH");
+				Log.d("com.basicengine", "EGL_BAD_MATCH");
 			}
 		}
 		if (!mEgl.eglMakeCurrent(mEglDisplay, mEglPBSurface, mEglPBSurface, mEglContext))//这里mEglPBSurface，意思是画图和读图都是从mEglPbSurface开始
 		{
-			Log.d("ERROR:", "bind failed ECODE:" + mEgl.eglGetError());
+			Log.d("com.basicengine", "bind failed ECODE:" + mEgl.eglGetError());
 		}
 		gl10 = (GL10) mEglContext.getGL();
+		gl10.glViewport(0, 0, size, size);
 	}
 
 	public Bitmap getContent(int x, int y, int width, int height) { // get bitmap from
