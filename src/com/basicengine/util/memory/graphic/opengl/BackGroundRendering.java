@@ -80,6 +80,7 @@ public class BackGroundRendering {
 		}
 		gl10 = (GL10) mEglContext.getGL();
 		gl10.glViewport(0, 0, size, size);
+		gl10.glLoadIdentity();
 	}
 
 	public Bitmap getContent(int x, int y, int width, int height) { // get bitmap from

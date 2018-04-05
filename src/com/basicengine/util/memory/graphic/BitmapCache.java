@@ -77,7 +77,7 @@ public class BitmapCache {
 		GLBitmap oldBitmap = new GLBitmap(gl10, GL_TEXTURE[index], textureid.get(index)); // get olds pic
 		oldBitmap.draw(0, 0);
 
-		GLBitmap glBitmap = new GLBitmap(gl10, bitmap);
+		GLBitmap glBitmap = new GLBitmap(gl10, bitmap);// draw new pic
 		glBitmap.draw(where.X, where.Y);
 
 		Bitmap btm = mbgr.getContent(0, 0, size, size); // get mixed pic
