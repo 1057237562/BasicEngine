@@ -10,6 +10,11 @@ import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.Log;
 
 public class BackGroundRendering {
@@ -89,10 +94,29 @@ public class BackGroundRendering {
 		gl10.glReadPixels(x, y, width, height, GL10.GL_RGBA, GL10.GL_UNSIGNED_BYTE, PixelBuffer);
 		PixelBuffer.position(0);
 		int pix[] = new int[width * height];
-		PixelBuffer.get(pix);
+		PixelBuffer.get(pix); // Red Channel is swapped with Blue
 
 		Bitmap bmp = Bitmap.createBitmap(pix, width, height, Bitmap.Config.ARGB_8888);
-		return bmp;
+
+		//Prepare the color matrix
+
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		
+		float[] src = new float[] {
+				0, 0, 1, 0, 0,
+				0, 1, 0, 0, 0,
+				1, 0, 0, 0, 0,
+		        0, 0, 0, 1, 0
+		};
+		ColorMatrix colorMatrix = new ColorMatrix(src);
+
+		Paint mPaint = new Paint();
+		mPaint.setColorFilter(new ColorMatrixColorFilter(colorMatrix));
+		
+		canvas.drawBitmap(bmp, new Rect(0, 0, width, height), new Rect(0, 0, width, height), mPaint);
+		bmp.recycle();
+		return bitmap;
 	}
 
 }
