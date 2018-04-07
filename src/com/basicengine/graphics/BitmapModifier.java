@@ -1,6 +1,8 @@
 package com.basicengine.graphics;
-import android.graphics.*;
+import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 
 public class BitmapModifier
 {
@@ -44,4 +46,26 @@ public class BitmapModifier
         frontBitmap.recycle();
         return bitmap;
     }
+
+	public static Bitmap rotateBitmap(Bitmap tBitmap, int degree) {
+		Matrix matrix = new Matrix();
+		matrix.setRotate(degree);
+		try {
+			return Bitmap.createBitmap(tBitmap,0,0,tBitmap.getWidth(),tBitmap.getHeight(),matrix,true);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
+
+	public static Bitmap flipBitmap(Bitmap tBitmap) {
+		Matrix matrix = new Matrix();
+		matrix.postScale(1, -1);
+		try {
+			return Bitmap.createBitmap(tBitmap, 0, 0, tBitmap.getWidth(), tBitmap.getHeight(), matrix, true);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
+	}
 }

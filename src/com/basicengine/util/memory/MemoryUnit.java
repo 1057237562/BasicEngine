@@ -9,8 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import android.util.Log;
-
 public class MemoryUnit {//public
 	
 	public Map<String, Status> hardmap = new HashMap<String, Status>();
@@ -66,7 +64,6 @@ public class MemoryUnit {//public
 	}
 	
 	public void createTempFile(Object o,String UUID) {
-		Log.e("com.basicengine", UUID);
 		try {
 			File path = new File(cacheStorge);
 			if (!path.exists()) {

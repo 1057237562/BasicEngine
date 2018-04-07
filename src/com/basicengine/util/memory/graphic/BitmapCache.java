@@ -1,14 +1,16 @@
 package com.basicengine.util.memory.graphic;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.basicengine.graphics.BitmapModifier;
 import com.basicengine.graphics.opengl.GLBitmap;
 import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.opengl.GLUtils;
 
@@ -50,44 +52,62 @@ public class BitmapCache {
 
 	BackGroundRendering mbgr;
 	GL10 gl10;
-	final int[] GL_TEXTURE = { GL10.GL_TEXTURE0, GL10.GL_TEXTURE1, GL10.GL_TEXTURE2, GL10.GL_TEXTURE3, GL10.GL_TEXTURE4,
+	/*final int[] GL_TEXTURE = { GL10.GL_TEXTURE0, GL10.GL_TEXTURE1, GL10.GL_TEXTURE2, GL10.GL_TEXTURE3, GL10.GL_TEXTURE4,
 	        GL10.GL_TEXTURE5, GL10.GL_TEXTURE6, GL10.GL_TEXTURE7, GL10.GL_TEXTURE8, GL10.GL_TEXTURE9, GL10.GL_TEXTURE10,
-	        GL10.GL_TEXTURE11, GL10.GL_TEXTURE12, GL10.GL_TEXTURE13, GL10.GL_TEXTURE14, GL10.GL_TEXTURE15 };
-	ArrayList<Integer> textureid = new ArrayList<Integer>();
-	int index = 0;
-	ArrayList<Stack> notfull = new ArrayList<Stack>();
+	        GL10.GL_TEXTURE11, GL10.GL_TEXTURE12, GL10.GL_TEXTURE13, GL10.GL_TEXTURE14, GL10.GL_TEXTURE15 };*/
+	int[] textures = new int[1];
 
-	public HashMap<String, Content> bmp = new HashMap<String, Content>();
+	Rect dRect = new Rect(0, 0, 0, 0);
+	public HashMap<String, Rect> bmp = new HashMap<String, Rect>();
 	int size = 512;
+	public static final int OPENGL_TEXTURESIZE = 512;
 
 	public BitmapCache(int s) {
 		size = s;
 		mbgr = new BackGroundRendering(size);
 		gl10 = mbgr.gl10;
+		gl10.glEnable(GL10.GL_TEXTURE_2D);
 	}
 
 	public BitmapCache() {
 		mbgr = new BackGroundRendering();
 		gl10 = mbgr.gl10;
+		gl10.glEnable(GL10.GL_TEXTURE_2D);
 	}
 
-	private void addBitmapToTexture(int index, Bitmap bitmap, Position where) {
+	private void addBitmapToTexture(Bitmap bitmap, Position where) {
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
-		gl10.glTranslatef(0, 0, 0.0f);
-		GLBitmap oldBitmap = new GLBitmap(gl10, GL_TEXTURE[index], textureid.get(index)); // get olds pic
-		oldBitmap.draw(0, 0);
+		gl10.glTranslatex(0, 0, 0);
+		if (textures[0] != 0) {
+			GLBitmap oldBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures[0]); // get olds pic
+			oldBitmap.draw(0, 0);
 
-		GLBitmap glBitmap = new GLBitmap(gl10, bitmap);// draw new pic
-		glBitmap.draw(where.X, where.Y);
+			Bitmap content = BitmapModifier.flipBitmap(mbgr.getContent(0, 0, size, size));
+			Canvas c = new Canvas(content);
+			c.drawBitmap(bitmap, where.X, where.Y, null);// mixed pic
 
-		Bitmap btm = mbgr.getContent(0, 0, size, size); // get mixed pic
-		int[] newtexture = new int[1];
-		gl10.glGenTextures(1, newtexture, 0);
-		GLUtils.texImage2D(GL_TEXTURE[index], 0, btm, 0);// update into texture
-		textureid.set(index, newtexture[0]);
+			gl10.glGenTextures(1, textures, 0);
+			gl10.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, content, 0);
+		} else {
+			// Expand Bitmap
+			Bitmap bg = Bitmap.createBitmap(size, size, Config.ARGB_8888);
+			Canvas canvas = new Canvas(bg);
+			canvas.drawBitmap(bitmap, new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+			        new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()), null);
+
+			gl10.glGenTextures(1, textures, 0);
+			gl10.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bg, 0);
+			bg.recycle();
+		}
 	}
 
-	public String addBitmap(Bitmap bitmap, boolean recycle) {
+	/*public String addBitmap(Bitmap bitmap, boolean recycle) {
 		for (Stack s : notfull.toArray(new Stack[0])) {
 			if (size - s.filled.right - bitmap.getWidth() >= 0) {
 				if (size - s.filled.top - bitmap.getHeight() >= 0) { // out of range
@@ -113,7 +133,7 @@ public class BitmapCache {
 				if (recycle) {
 					bitmap.recycle();
 				}
-
+	
 				String UUID = System.currentTimeMillis() + "";
 				bmp.put(UUID, new Content(new Rect(s.filled.left, s.filled.top, s.filled.left + bitmap.getWidth(),
 				        s.filled.top + bitmap.getHeight()), s.index));
@@ -129,7 +149,7 @@ public class BitmapCache {
 		if (recycle) {
 			bitmap.recycle();
 		}
-
+	
 		String UUID = System.currentTimeMillis() + ""; // allocate IDs
 		bmp.put(UUID, new Content(new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()), index));
 		if (bitmap.getWidth() < size || bitmap.getHeight() < size) {
@@ -137,13 +157,39 @@ public class BitmapCache {
 		}
 		index++;
 		return UUID;
+	}*/
+
+	public String addBitmap(Bitmap bitmap, boolean recycle) throws OutOfSpaceException {
+		if (dRect.left + bitmap.getWidth() > size) {
+			dRect.top = dRect.bottom;
+			dRect.left = 0;
+			if (dRect.top + bitmap.getHeight() > size) {
+				//throw new OutOfSpaceException();
+			}
+		}
+		if (dRect.bottom < dRect.top + bitmap.getHeight()) {
+			dRect.bottom = dRect.top + bitmap.getHeight();
+		}
+		addBitmapToTexture(bitmap, new Position(dRect.left, dRect.top));
+		dRect.left += bitmap.getWidth();
+		if (recycle) {
+			bitmap.recycle();
+		}
+
+		String UUID = System.currentTimeMillis() + ""; // allocate IDs
+		bmp.put(UUID, new Rect(dRect.left - bitmap.getWidth(), dRect.top, dRect.left, dRect.top + bitmap.getHeight()));
+		return UUID;
 	}
 
 	public Bitmap getBitmap(String UUID) {
-		Content c = bmp.get(UUID);
-		GLBitmap gBitmap = new GLBitmap(gl10, GL_TEXTURE[c.index], textureid.get(c.index));
-		gBitmap.draw(0, 0);
-		return mbgr.getContent(c.rect.left, c.rect.top, c.rect.right - c.rect.left, c.rect.bottom - c.rect.top); // get allocated area's image content
+		Rect c = bmp.get(UUID);
+		GLBitmap gBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures[0]);
+		gBitmap.draw(-1, -1);
+		return BitmapModifier
+		        .flipBitmap(mbgr.getContent(c.left, OPENGL_TEXTURESIZE - (c.bottom - c.top) * OPENGL_TEXTURESIZE / size,
+		                (c.right - c.left) * OPENGL_TEXTURESIZE / size,
+		                (c.bottom - c.top) * OPENGL_TEXTURESIZE / size)); // get allocated area's image content
+		//return BitmapModifier.flipBitmap(mbgr.getContent(0, 312, 400, 200));
 	}
 
 }
@@ -155,25 +201,5 @@ class Position {
 	public Position(int x, int y) {
 		X = x;
 		Y = y;
-	}
-}
-
-class Content {
-	Rect rect;
-	int index;
-
-	public Content(Rect r, int i) {
-		rect = r;
-		index = i;
-	}
-}
-
-class Stack {
-	public Rect filled = new Rect(0, 0, 0, 0);
-	public int index;
-
-	public Stack(int i, Rect r) {
-		index = i;
-		filled = r;
 	}
 }
