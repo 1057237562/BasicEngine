@@ -82,9 +82,11 @@ public class BitmapCache {
 			GLBitmap oldBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures[0]); // get olds pic
 			oldBitmap.draw(0, 0);
 
-			Bitmap content = BitmapModifier.flipBitmap(mbgr.getContent(0, 0, size, size));
+			Bitmap content = BitmapModifier.modify(BitmapModifier.flipBitmap(mbgr.getContent(0, 0, 512, 512)), size,
+			        size);
 			Canvas c = new Canvas(content);
-			c.drawBitmap(bitmap, where.X, where.Y, null);// mixed pic
+			c.drawBitmap(bitmap, new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
+			        new Rect(where.X, where.Y, where.X + bitmap.getWidth(), where.Y + bitmap.getHeight()), null);// mixed pic
 
 			gl10.glGenTextures(1, textures, 0);
 			gl10.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
@@ -186,10 +188,10 @@ public class BitmapCache {
 		GLBitmap gBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures[0]);
 		gBitmap.draw(-1, -1);
 		return BitmapModifier
-		        .flipBitmap(mbgr.getContent(c.left, OPENGL_TEXTURESIZE - (c.bottom - c.top) * OPENGL_TEXTURESIZE / size,
+		        .flipBitmap(mbgr.getContent(c.left, OPENGL_TEXTURESIZE - c.bottom * OPENGL_TEXTURESIZE / size,
 		                (c.right - c.left) * OPENGL_TEXTURESIZE / size,
 		                (c.bottom - c.top) * OPENGL_TEXTURESIZE / size)); // get allocated area's image content
-		//return BitmapModifier.flipBitmap(mbgr.getContent(0, 312, 400, 200));
+		//return BitmapModifier.flipBitmap(mbgr.getContent(0, 0, 512, 512));
 	}
 
 }
