@@ -1,5 +1,6 @@
 package com.basicengine.util.memory.graphic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL10;
@@ -55,10 +56,12 @@ public class BitmapCache {
 	/*final int[] GL_TEXTURE = { GL10.GL_TEXTURE0, GL10.GL_TEXTURE1, GL10.GL_TEXTURE2, GL10.GL_TEXTURE3, GL10.GL_TEXTURE4,
 	        GL10.GL_TEXTURE5, GL10.GL_TEXTURE6, GL10.GL_TEXTURE7, GL10.GL_TEXTURE8, GL10.GL_TEXTURE9, GL10.GL_TEXTURE10,
 	        GL10.GL_TEXTURE11, GL10.GL_TEXTURE12, GL10.GL_TEXTURE13, GL10.GL_TEXTURE14, GL10.GL_TEXTURE15 };*/
-	int[] textures = new int[1];
+	//int[] textures = new int[1];
+
+	ArrayList<TextureStatement> textures = new ArrayList<TextureStatement>();
 
 	Rect dRect = new Rect(0, 0, 0, 0);
-	public HashMap<String, Rect> bmp = new HashMap<String, Rect>();
+	public HashMap<String, Identifier> bmp = new HashMap<String, Identifier>();
 	int size = 512;
 	public static final int OPENGL_TEXTURESIZE = 512;
 
@@ -179,7 +182,7 @@ public class BitmapCache {
 		}
 
 		String UUID = System.currentTimeMillis() + ""; // allocate IDs
-		bmp.put(UUID, new Rect(dRect.left - bitmap.getWidth(), dRect.top, dRect.left, dRect.top + bitmap.getHeight()));
+		bmp.put(UUID, new Identifier( ,new Rect(dRect.left - bitmap.getWidth(), dRect.top, dRect.left, dRect.top + bitmap.getHeight())));
 		return UUID;
 	}
 
@@ -204,4 +207,19 @@ class Position {
 		X = x;
 		Y = y;
 	}
+}
+
+class Identifier {
+	int id;
+	Rect rect;
+
+	public Identifier(int idz, Rect r) {
+		id = idz;
+		rect = r;
+	}
+}
+
+class TextureStatement {
+	int useage = 0;
+	int[] texture;
 }
