@@ -86,7 +86,7 @@ public class BitmapCache {
 	private void addBitmapToTexture(int index, Bitmap bitmap, Position where) {
 		gl10.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl10.glTranslatex(0, 0, 0);
-		if (textures.size() < index) {
+		if (textures.size() > index) {
 			GLBitmap oldBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures.get(index).texture[0]); // get olds pic
 			oldBitmap.draw(0, 0);
 
@@ -109,7 +109,7 @@ public class BitmapCache {
 			canvas.drawBitmap(bitmap, new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()),
 			        new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight()), null);
 
-			gl10.glGenTextures(1, textures.get(index).texture, 0);
+			gl10.glGenTextures(index, textures.get(index).texture, 0);
 			gl10.glBindTexture(GL10.GL_TEXTURE_2D, textures.get(index).texture[0]);
 			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 			gl10.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
@@ -197,26 +197,25 @@ public class BitmapCache {
 		}
 
 		if (dRect.left + bitmap.getWidth() > size) {
-			if (dRect.top + bitmap.getHeight() > size) {
-				if (activeFragmentFinder) {
-					TextureStatement ts = new TextureStatement();
-					ts.filled = new Rect(0, dRect.top, dRect.left, dRect.bottom);
-					ts.texture = textures.get(nowindex).texture;
-					notfulls.add(ts);
-					dRect.top = 0;
-					dRect.bottom = 0;
-					dRect.right = 0;
-					dRect.left = 0;
-				}
-
-				nowindex++;
-
-			}
 			dRect.top = dRect.bottom;
 			dRect.left = 0;
 		}
 		if (dRect.bottom < dRect.top + bitmap.getHeight()) {
 			dRect.bottom = dRect.top + bitmap.getHeight();
+		}
+		if (dRect.bottom > size) {
+			if (activeFragmentFinder) {
+				TextureStatement ts = new TextureStatement();
+				ts.filled = new Rect(0, dRect.top, dRect.left, dRect.bottom);
+				ts.texture = textures.get(nowindex).texture;
+				notfulls.add(ts);
+			}
+
+			nowindex++;
+			dRect.top = 0;
+			dRect.bottom = 0;
+			dRect.right = 0;
+			dRect.left = 0;
 		}
 		addBitmapToTexture(nowindex, bitmap, new Position(dRect.left, dRect.top));
 		dRect.left += bitmap.getWidth();

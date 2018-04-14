@@ -55,12 +55,12 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	public GLBitmap(GL10 gl10, Bitmap bitmap, int typel) {
+	public GLBitmap(GL10 gl10, Bitmap bitmap, int typel, int index) {
 		gl = gl10;
 		type = typel;
 
 		gl.glEnable(type);
-		gl.glGenTextures(1, textures, 0);
+		gl.glGenTextures(index, textures, 0);
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
