@@ -2,12 +2,12 @@ package com.basicengine.graphics.opengl;
 
 import android.graphics.Rect;
 
-public class GLRenerObject {
+public class GLRenderObject {
 
 	public GLBitmap Texture;
 	Rect rect = new Rect(0, 0, 0, 0);
 
-	public GLRenerObject(GLBitmap texture, int X, int Y, int width, int height) {
+	public GLRenderObject(GLBitmap texture, int X, int Y, int width, int height) {
 		Texture = texture;
 		rect.left = X;
 		rect.top = Y;
