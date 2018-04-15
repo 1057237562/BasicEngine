@@ -31,12 +31,15 @@ public class GLBitmap {
 	int[] textures = new int[1];
 	GL10 gl;
 	int type = GL10.GL_TEXTURE_2D;
+	int index = 1; // The Texture which is contains or allocated this picture's index
 
-	public GLBitmap(GL10 gl10, Bitmap bitmap) {
+	public GLBitmap(GL10 gl10, Bitmap bitmap, int i) {
 		gl = gl10;
 
+		index = i;
+
 		gl.glEnable(type);
-		gl.glGenTextures(1, textures, 0);
+		gl.glGenTextures(index, textures, 0);
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
@@ -55,7 +58,56 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	public GLBitmap(GL10 gl10, Bitmap bitmap, int typel, int index) {
+	public GLBitmap(GL10 gl10, Bitmap bitmap) {
+		gl = gl10;
+
+		gl.glEnable(type);
+		gl.glGenTextures(index, textures, 0);
+		gl.glBindTexture(type, textures[0]);
+		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+		GLUtils.texImage2D(type, 0, bitmap, 0);
+
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuffer.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+
+		byteBuffer = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuffer.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+	}
+
+	public GLBitmap(GL10 gl10, int typel, Bitmap bitmap, int i) {
+		gl = gl10;
+		type = typel;
+
+		index = i;
+
+		gl.glEnable(type);
+		gl.glGenTextures(index, textures, 0);
+		gl.glBindTexture(type, textures[0]);
+		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+		GLUtils.texImage2D(type, 0, bitmap, 0);
+
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuffer.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
+
+		byteBuffer = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuffer.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+	}
+
+	public GLBitmap(GL10 gl10, int typel, Bitmap bitmap) {
 		gl = gl10;
 		type = typel;
 
@@ -100,14 +152,28 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	public void loadGLTexture(Bitmap bitmap) {
-		gl.glGenTextures(1, textures, 0);
+	public void loadGLTexture(Bitmap bitmap, int i) {
+		index = i;
+
+		gl.glGenTextures(index, textures, 0);
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 	}
 	
+	public void loadGLTexture(Bitmap bitmap) {
+		gl.glGenTextures(index, textures, 0);
+		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
 	@SuppressWarnings("unused")
 	@Deprecated
 	private void setRectDx(Rect r) {
