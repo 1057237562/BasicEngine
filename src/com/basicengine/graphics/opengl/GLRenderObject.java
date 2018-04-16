@@ -5,6 +5,7 @@ import android.graphics.Rect;
 public class GLRenderObject {
 
 	public GLBitmap Texture;
+	public GLGameFrame parent;
 	Rect rect = new Rect(0, 0, 0, 0);
 
 	public GLRenderObject(GLBitmap texture, int X, int Y, int width, int height) {
@@ -17,7 +18,15 @@ public class GLRenderObject {
 
 
 	public void draw() {
-		Texture.draw(rect.left, rect.top);
+		Texture.draw(rect.left, rect.top); // Still needs confirmation
+	}
+
+	public void onClick(float x, float y) {
+
+	}
+
+	public void onTouch(float x, float y, int action) {
+
 	}
 
 }
