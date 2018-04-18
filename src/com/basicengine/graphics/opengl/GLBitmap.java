@@ -174,9 +174,8 @@ public class GLBitmap {
 		this.index = index;
 	}
 
-	@SuppressWarnings("unused")
 	@Deprecated
-	private void setRectDx(Rect r) {
+	public void setRectDx(Rect r) {
 		float[] vertic = new float[8];
 		vertic[0] = r.left;
 		vertic[1] = r.bottom;
@@ -194,9 +193,8 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	@SuppressWarnings("unused")
 	@Deprecated
-	private void setRectEx(Rect r, Rect fixed) {
+	public void setRectEx(Rect r, Rect fixed) {
 		float ratio = (float)4 / (float)(fixed.right - fixed.left + fixed.bottom - fixed.top); //Just for beauty 
 		float[] vertic = new float[12];
 		vertic[0] = r.left * ratio - 1;

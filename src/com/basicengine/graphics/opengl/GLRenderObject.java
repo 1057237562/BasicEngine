@@ -17,8 +17,10 @@ public class GLRenderObject {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public void draw() {
-		Texture.draw(rect.left, rect.top); // Still needs confirmation
+		Texture.setRectEx(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		Texture.draw(0, 0); // Still needs confirmation
 	}
 
 	public void onClick(float x, float y) {
