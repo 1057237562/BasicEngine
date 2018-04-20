@@ -6,7 +6,9 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -17,13 +19,30 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	public int VisionX = 0;
 	public int VisionY = 0;
 
+	public GLGameFrame(Context context, AttributeSet attrs) {
+		super(context, attrs);
+
+		//setEGLContextClientVersion(2);
+		setRenderer(this);
+		setOnTouchListener(this);
+
+		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+	}
+
 	public GLGameFrame(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		setEGLContextClientVersion(2);
-		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+		//setEGLContextClientVersion(2);
 		setRenderer(this);
 		setOnTouchListener(this);
+
+		setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		// TODO Auto-generated method stub
+		super.onDraw(canvas);
 	}
 
 	public void addRenderObject(GLRenderObject object) {
@@ -45,7 +64,7 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	@Override
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		// TODO Auto-generated method stub
-		gl.glViewport(0, 0, width, height);
+		gl.glViewport(0, 0, getMeasuredWidth(), getMeasuredHeight());
 
 		gl.glLoadIdentity();
 	}

@@ -193,24 +193,27 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	@Deprecated
 	public void setRectEx(Rect r, Rect fixed) {
-		float ratio = (float)4 / (float)(fixed.right - fixed.left + fixed.bottom - fixed.top); //Just for beauty 
+		float ratio = (float) 4 / (float) (fixed.right - fixed.left + fixed.bottom - fixed.top); //Just for beauty 
 		float[] vertic = new float[12];
 		vertic[0] = r.left * ratio - 1;
-		vertic[1] = r.bottom * ratio - 1;
-		vertic[2] = r.left * ratio - 1;
-		vertic[3] = r.top * ratio - 1;
-		vertic[4] = r.right * ratio - 1;
-		vertic[5] = r.bottom * ratio - 1;
+		vertic[1] = r.top * ratio - 1;
+		vertic[2] = 0;
+		vertic[3] = r.left * ratio - 1;
+		vertic[4] = r.bottom * ratio - 1;
+		vertic[5] = 0;
 		vertic[6] = r.right * ratio - 1;
 		vertic[7] = r.top * ratio - 1;
+		vertic[8] = 0;
+		vertic[9] = r.right * ratio - 1;
+		vertic[10] = r.bottom * ratio - 1;
+		vertic[11] = 0;
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertic.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
-		textureBuffer = byteBuffer.asFloatBuffer();
-		textureBuffer.put(vertic);
-		textureBuffer.position(0);
+		vertexBuffer = byteBuffer.asFloatBuffer();
+		vertexBuffer.put(vertic);
+		vertexBuffer.position(0);
 	}
 
 	public void draw(int x, int y) {

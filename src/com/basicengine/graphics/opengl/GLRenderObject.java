@@ -16,8 +16,6 @@ public class GLRenderObject {
 		rect.bottom = Y + height;
 	}
 
-
-	@SuppressWarnings("deprecation")
 	public void draw() {
 		Texture.setRectEx(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 		Texture.draw(0, 0); // Still needs confirmation
