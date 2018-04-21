@@ -33,6 +33,8 @@ public class GLBitmap {
 	int type = GL10.GL_TEXTURE_2D;
 	int index = 1; // The Texture which is contains or allocated this picture's index
 
+	public static final int OPENGL_TEXTURESIZE = 512;
+
 	public GLBitmap(GL10 gl10, Bitmap bitmap, int i) {
 		gl = gl10;
 
@@ -174,17 +176,16 @@ public class GLBitmap {
 		this.index = index;
 	}
 
-	@Deprecated
-	public void setRectDx(Rect r) {
+	public void setTextureClip(Rect r) {
 		float[] vertic = new float[8];
-		vertic[0] = r.left;
-		vertic[1] = r.bottom;
-		vertic[2] = r.left;
-		vertic[3] = r.top;
-		vertic[4] = r.right;
-		vertic[5] = r.bottom;
-		vertic[6] = r.right;
-		vertic[7] = r.top;
+		vertic[0] = r.left / OPENGL_TEXTURESIZE;
+		vertic[1] = 1 - r.top / OPENGL_TEXTURESIZE;
+		vertic[2] = r.left / OPENGL_TEXTURESIZE;
+		vertic[3] = 1 - r.bottom / OPENGL_TEXTURESIZE;
+		vertic[4] = r.right / OPENGL_TEXTURESIZE;
+		vertic[5] = 1 - r.top / OPENGL_TEXTURESIZE;
+		vertic[6] = r.right / OPENGL_TEXTURESIZE;
+		vertic[7] = 1 - r.bottom / OPENGL_TEXTURESIZE;
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertic.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -193,20 +194,21 @@ public class GLBitmap {
 		textureBuffer.position(0);
 	}
 
-	public void setRectEx(Rect r, Rect fixed) {
-		float ratio = (float) 4 / (float) (fixed.right - fixed.left + fixed.bottom - fixed.top); //Just for beauty 
+	public void setRect(Rect r, Rect fixed) {
+		float hratio = (float) 1 / (float) (fixed.right - fixed.left); // Kinda like Matrix
+		float vratio = (float) 1 / (float) (fixed.bottom - fixed.top);
 		float[] vertic = new float[12];
-		vertic[0] = r.left * ratio - 1;
-		vertic[1] = r.top * ratio - 1;
+		vertic[0] = r.left * hratio * 2 - 1;
+		vertic[1] = 1 - r.bottom * vratio * 2;
 		vertic[2] = 0;
-		vertic[3] = r.left * ratio - 1;
-		vertic[4] = r.bottom * ratio - 1;
+		vertic[3] = r.left * hratio * 2 - 1;
+		vertic[4] = 1 - r.top * vratio * 2;
 		vertic[5] = 0;
-		vertic[6] = r.right * ratio - 1;
-		vertic[7] = r.top * ratio - 1;
+		vertic[6] = r.right * hratio * 2 - 1;
+		vertic[7] = 1 - r.bottom * vratio * 2;
 		vertic[8] = 0;
-		vertic[9] = r.right * ratio - 1;
-		vertic[10] = r.bottom * ratio - 1;
+		vertic[9] = r.right * hratio * 2 - 1;
+		vertic[10] = 1 - r.top * vratio * 2;
 		vertic[11] = 0;
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertic.length * 4);
@@ -216,8 +218,7 @@ public class GLBitmap {
 		vertexBuffer.position(0);
 	}
 
-	public void draw(int x, int y) {
-		gl.glTranslatex(x, y, 0);
+	public void draw() {
 		// bind the previously generated texture  
 		gl.glBindTexture(type, textures[0]);
 

@@ -17,8 +17,8 @@ public class GLRenderObject {
 	}
 
 	public void draw() {
-		Texture.setRectEx(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
-		Texture.draw(0, 0); // Still needs confirmation
+		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		Texture.draw(); // Still needs confirmation
 	}
 
 	public void onClick(float x, float y) {

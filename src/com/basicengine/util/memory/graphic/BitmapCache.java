@@ -63,7 +63,6 @@ public class BitmapCache {
 	Rect dRect = new Rect(0, 0, 0, 0);
 	public HashMap<String, Identifier> bmp = new HashMap<String, Identifier>();
 	int size = 512;
-	public static final int OPENGL_TEXTURESIZE = 512;
 
 	boolean activeFragmentFinder = false;
 	public ArrayList<TextureStatement> notfulls = new ArrayList<TextureStatement>();
@@ -88,7 +87,7 @@ public class BitmapCache {
 		gl10.glTranslatex(0, 0, 0);
 		if (textures.size() > index) {
 			GLBitmap oldBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures.get(index).texture[0]); // get olds pic
-			oldBitmap.draw(0, 0);
+			oldBitmap.draw();
 
 			Bitmap content = BitmapModifier.modify(BitmapModifier.flipBitmap(mbgr.getContent(0, 0, 512, 512)), size,
 			        size);
@@ -232,11 +231,13 @@ public class BitmapCache {
 	public Bitmap getBitmap(String UUID) {
 		Identifier c = bmp.get(UUID);
 		GLBitmap gBitmap = new GLBitmap(gl10, GL10.GL_TEXTURE_2D, textures.get(c.id).texture[0]);
-		gBitmap.draw(-1, -1);
+		gl10.glTranslatex(-1, -1, 0);
+		gBitmap.draw();
 		return BitmapModifier
-		        .flipBitmap(mbgr.getContent(c.rect.left, OPENGL_TEXTURESIZE - c.rect.bottom * OPENGL_TEXTURESIZE / size,
-		                (c.rect.right - c.rect.left) * OPENGL_TEXTURESIZE / size,
-		                (c.rect.bottom - c.rect.top) * OPENGL_TEXTURESIZE / size)); // get allocated area's image content
+		        .flipBitmap(mbgr.getContent(c.rect.left,
+		                GLBitmap.OPENGL_TEXTURESIZE - c.rect.bottom * GLBitmap.OPENGL_TEXTURESIZE / size,
+		                (c.rect.right - c.rect.left) * GLBitmap.OPENGL_TEXTURESIZE / size,
+		                (c.rect.bottom - c.rect.top) * GLBitmap.OPENGL_TEXTURESIZE / size)); // get allocated area's image content
 		//return BitmapModifier.flipBitmap(mbgr.getContent(0, 0, 512, 512));
 	}
 
