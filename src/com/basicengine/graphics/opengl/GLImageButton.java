@@ -1,5 +1,6 @@
 package com.basicengine.graphics.opengl;
 
+import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -13,6 +14,9 @@ public class GLImageButton extends GLGUI {
 
 	public GLImageButton(GLBitmap n, GLBitmap h, GLBitmap c, int X, int Y, int width, int height) {
 		super(n, X, Y, width, height);
+		n.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		h.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		c.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 		normal = n;
 		hover = h;
 		clicked = c;
