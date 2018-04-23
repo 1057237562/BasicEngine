@@ -6,7 +6,7 @@ public class GLRenderObject {
 
 	public GLBitmap Texture;
 	public GLGameFrame parent;
-	Rect rect = new Rect(0, 0, 0, 0);
+	public Rect rect = new Rect(0, 0, 0, 0);
 
 	public GLRenderObject(GLBitmap texture, int X, int Y, int width, int height) {
 		Texture = texture;
@@ -17,8 +17,11 @@ public class GLRenderObject {
 	}
 
 	public void draw() {
-		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 		Texture.draw(); // Still needs confirmation
+	}
+
+	public void onCreate() {
+		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 	}
 
 	public void onClick(float x, float y) {

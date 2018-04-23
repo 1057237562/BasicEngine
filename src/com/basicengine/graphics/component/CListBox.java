@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import com.basicengine.graphics.BitmapModifier;
 import com.basicengine.graphics.Component;
 import com.basicengine.graphics.GUI;
+import com.basicengine.util.SerializbaleBitmap;
+import com.basicengine.util.memory.MemoryUnit;
 
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
 import android.graphics.Picture;
 import android.graphics.Rect;
-import android.graphics.Bitmap.Config;
-
-import com.basicengine.util.memory.MemoryUnit;
-import com.basicengine.util.SerializbaleBitmap;
 
 public class CListBox extends GUI {
 
@@ -138,7 +137,7 @@ public class CListBox extends GUI {
 		for (int s = 0; s < items.size(); s++) {
 			Component com = items.get(s);
 			clip.drawBitmap(((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap(), new Rect(0, 0, ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getWidth(), ((SerializbaleBitmap)MemoryUnit.getInstance().getFromCache(com.TextureID)).getBitmap().getHeight()),
-			        new Rect(com.X, com.Y, com.X + com.Width, com.Y + com.Height), null);
+			        new Rect(com.X, com.Y, com.X + com.Width, com.Y + com.Height), null); // Reversing
 			com.draw(clip);
 		}
 		picture.endRecording();

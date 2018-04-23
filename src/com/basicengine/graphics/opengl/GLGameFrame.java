@@ -18,6 +18,9 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	ArrayList<GLRenderObject> objects = new ArrayList<GLRenderObject>();
 	public int VisionX = 0;
 	public int VisionY = 0;
+	public GL10 gl10;
+
+	public Runnable post_runnable;
 
 	public GLGameFrame(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -48,6 +51,8 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	public void addRenderObject(GLRenderObject object) {
 		object.parent = this;
 		objects.add(object);
+
+		object.onCreate();
 	}
 
 	@Override
@@ -73,6 +78,9 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 		// TODO Auto-generated method stub
 
+		//Overwrite Post action
+		gl10 = gl;
+		post_runnable.run();
 	}
 
 	@Override
@@ -87,6 +95,13 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 				}
 			}
 		}
+		return true;
+	}
+
+	@Override
+	public boolean post(Runnable action) {
+		// TODO Auto-generated method stub
+		post_runnable = action;
 		return true;
 	}
 

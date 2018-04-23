@@ -3,10 +3,18 @@ package com.basicengine.graphics.opengl;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 public class GLImageButton extends GLGUI {
 
-	View.OnClickListener ls;
+	OnClickListener ls = new OnClickListener() {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	GLBitmap normal = null;
 	GLBitmap hover = null;
@@ -14,13 +22,19 @@ public class GLImageButton extends GLGUI {
 
 	public GLImageButton(GLBitmap n, GLBitmap h, GLBitmap c, int X, int Y, int width, int height) {
 		super(n, X, Y, width, height);
-		n.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
-		h.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
-		c.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 		normal = n;
 		hover = h;
 		clicked = c;
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		normal.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		hover.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		clicked.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 	}
 
 	public void setOnClickListener(View.OnClickListener ls) {
@@ -35,11 +49,8 @@ public class GLImageButton extends GLGUI {
 			case MotionEvent.ACTION_DOWN:
 				Texture = clicked;
 			break;
-			case MotionEvent.ACTION_HOVER_ENTER:
+			case MotionEvent.ACTION_MOVE:
 				Texture = hover;
-			break;
-			case MotionEvent.ACTION_HOVER_EXIT:
-				Texture = normal;
 			break;
 			case MotionEvent.ACTION_UP:
 				Texture = normal;
