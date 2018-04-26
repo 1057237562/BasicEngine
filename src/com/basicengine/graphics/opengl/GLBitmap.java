@@ -45,7 +45,7 @@ public class GLBitmap {
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(type, 0, bitmap, 0);
+		GLUtils.texImage2D(type, 0, GL10.GL_RGBA, bitmap, 0);
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -68,7 +68,7 @@ public class GLBitmap {
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(type, 0, bitmap, 0);
+		GLUtils.texImage2D(type, 0, GL10.GL_RGBA, bitmap, 0);
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -94,7 +94,7 @@ public class GLBitmap {
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(type, 0, bitmap, 0);
+		GLUtils.texImage2D(type, 0, GL10.GL_RGBA, bitmap, 0);
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -118,7 +118,7 @@ public class GLBitmap {
 		gl.glBindTexture(type, textures[0]);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(type, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(type, 0, bitmap, 0);
+		GLUtils.texImage2D(type, 0, GL10.GL_RGBA, bitmap, 0);
 
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4);
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -161,7 +161,7 @@ public class GLBitmap {
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GL10.GL_RGBA, bitmap, 0);
 	}
 	
 	public void loadGLTexture(Bitmap bitmap) {
@@ -169,7 +169,7 @@ public class GLBitmap {
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
 		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, GL10.GL_RGBA, bitmap, 0);
 	}
 
 	public void setIndex(int index) {

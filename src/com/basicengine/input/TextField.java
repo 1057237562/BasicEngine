@@ -1,10 +1,17 @@
 package com.basicengine.input;
-import com.basicengine.graphics.*;
-import android.graphics.*;
-import android.view.inputmethod.*;
-import android.content.*;
-import android.view.View.*;
-import android.view.*;
+import com.basicengine.graphics.BitmapModifier;
+import com.basicengine.graphics.GUI;
+import com.basicengine.graphics.GameFrame;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 
 public class TextField extends GUI
 {
@@ -31,7 +38,7 @@ public class TextField extends GUI
 		Rect rect = new Rect();
 		mp.getTextBounds(content.toString(),0,content.length(), rect);
 		float width = rect.width();
-		cursor = (int)( (X-startX)/width * content.length());
+		cursor = (int) ((X - this.X - startX) / width * content.length());
 		if(cursor > content.length()){
 			cursor = content.length();
 		}

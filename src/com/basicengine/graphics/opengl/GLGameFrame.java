@@ -78,6 +78,14 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 	public void onSurfaceCreated(GL10 gl, EGLConfig arg1) {
 		// TODO Auto-generated method stub
 
+		// Initialize
+		gl.glEnable(GL10.GL_DEPTH_TEST);
+		gl.glEnable(GL10.GL_ALPHA_TEST);
+		gl.glAlphaFunc(GL10.GL_GREATER, 0f);
+
+		//gl.glEnable(GL10.GL_BLEND);
+		//gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+
 		//Overwrite Post action
 		gl10 = gl;
 		post_runnable.run();

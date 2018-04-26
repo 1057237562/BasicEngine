@@ -17,7 +17,7 @@ public class GLRenderObject {
 	}
 
 	public void draw() {
-		Texture.draw(); // Still needs confirmation
+		Texture.draw();
 	}
 
 	public void onCreate() {

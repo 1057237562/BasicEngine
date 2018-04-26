@@ -22,6 +22,7 @@ public class GLTextBox extends GLGUI {
 	public boolean center = true;
 	boolean upper = false;
 	GLBitmap text;
+	public boolean changed = false;
 
 	public GLTextBox(GLBitmap texture, int X, int Y, int width, int height) {
 		super(texture, X, Y, width, height);
@@ -38,14 +39,21 @@ public class GLTextBox extends GLGUI {
 
 		mp = new Paint();
 		mp.setTextSize(20);
-		mp.setColor(Color.WHITE);
+		mp.setColor(Color.BLACK);
 	}
 
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
-		super.draw();
+		if (changed) {
+			regenerateTexture();
+			changed = false;
+		} // This is not the best way to regenerate the Texture
+
 		text.draw();
+		super.draw();
+		// This things Override all Image
+		// This reminds me that Object in OpenGL will Override the down layout
 	}
 
 	@Override
@@ -54,7 +62,7 @@ public class GLTextBox extends GLGUI {
 		Rect rect = new Rect();
 		mp.getTextBounds(content.toString(), 0, content.length(), rect);
 		float width = rect.width();
-		cursor = (int) ((rect.left - startX) / width * content.length());
+		cursor = (int) ((x - this.rect.left - startX) / width * content.length());
 		if (cursor > content.length()) {
 			cursor = content.length();
 		}
@@ -109,6 +117,8 @@ public class GLTextBox extends GLGUI {
 								}
 							} catch (Exception e) {
 							}
+
+							changed = true;
 							return false;
 						case KeyEvent.KEYCODE_FORWARD_DEL:
 							try {
@@ -123,7 +133,7 @@ public class GLTextBox extends GLGUI {
 					}
 					cursor++;
 
-					regenerateTexture();
+					changed = true;
 				}
 				return false;
 			}
@@ -132,16 +142,19 @@ public class GLTextBox extends GLGUI {
 
 	public void regenerateTexture() {
 		Bitmap text_texture = Bitmap.createBitmap(rect.right - rect.left, rect.bottom - rect.top, Config.ARGB_8888);
+
 		Canvas canvas = new Canvas(text_texture);
 
 		if (center) {
 			Rect rect = new Rect();
 			mp.getTextBounds(content.toString(), 0, content.length(), rect);
 			int height = rect.height();
-			startY = (rect.bottom - rect.top - height) / 2;
+			startY = (this.rect.bottom - this.rect.top - height) / 2;
 		}
 		canvas.drawText(content.toString(), startX, startY, mp);
-		text.loadGLTexture(text_texture);
+
+		text = new GLBitmap(parent.gl10, text_texture);
+		text.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 	}
 
 	public void setMainPaint(Paint mp) {
@@ -153,6 +166,6 @@ public class GLTextBox extends GLGUI {
 		Rect rect = new Rect();
 		mp.getTextBounds(content.toString(), 0, content.length(), rect);
 		int height = rect.height();
-		startY = (rect.bottom - rect.top - height) / 2;
+		startY = (this.rect.bottom - this.rect.top - height) / 2;
 	}
 }
