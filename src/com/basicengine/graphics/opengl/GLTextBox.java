@@ -153,8 +153,9 @@ public class GLTextBox extends GLGUI {
 		}
 		canvas.drawText(content.toString(), startX, startY, mp);
 
-		text = new GLBitmap(parent.gl10, text_texture);
-		text.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		text.loadGLTexture(text_texture);
+		/*text = new GLBitmap(parent.gl10, text_texture);
+		text.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));*/
 	}
 
 	public void setMainPaint(Paint mp) {
