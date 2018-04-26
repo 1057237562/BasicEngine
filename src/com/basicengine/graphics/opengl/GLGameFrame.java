@@ -61,8 +61,8 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		gl.glTranslatex(0, 0, 0);//-1, -1, 0);
 
-		for (GLRenderObject object : objects.toArray(new GLRenderObject[0])) {
-			object.draw();
+		for (int i = objects.size() - 1; i >= 0; i--) {
+			objects.get(i).draw();
 		}
 	}
 
