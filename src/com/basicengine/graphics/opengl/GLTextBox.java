@@ -33,7 +33,7 @@ public class GLTextBox extends GLGUI {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		text = new GLBitmap(parent.gl10,
+		text = new GLBitmap(gl,
 		        Bitmap.createBitmap(rect.right - rect.left, rect.bottom - rect.top, Config.ARGB_8888)); //Temporary
 		text.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 

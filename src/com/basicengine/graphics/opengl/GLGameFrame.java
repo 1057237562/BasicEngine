@@ -50,6 +50,7 @@ public class GLGameFrame extends GLSurfaceView implements GLSurfaceView.Renderer
 
 	public void addRenderObject(GLRenderObject object) {
 		object.parent = this;
+		object.gl = this.gl10;
 		objects.add(object);
 
 		object.onCreate();

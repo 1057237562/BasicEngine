@@ -20,4 +20,13 @@ public class GLListBox extends Grid {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void addRenderObject(GLRenderObject object)
+	{
+		// TODO: Implement this method
+		
+		
+		super.addRenderObject(object);
+	}
+
 }
