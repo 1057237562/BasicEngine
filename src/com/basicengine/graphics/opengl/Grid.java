@@ -8,20 +8,27 @@ import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.graphics.*;
+import android.graphics.Point;
 
 public class Grid extends GLGUI {
 
 	public ArrayList<GLRenderObject> objects = new ArrayList<GLRenderObject>();
-	BackGroundRendering bgr = new BackGroundRendering();
+	BackGroundRendering bgr = new BackGroundRendering(); // This case Problem
 	GLBitmap content;
 	
-	Point scroll;
+	Point scroll = new Point(0, 0);
 
 	public Grid(GLBitmap texture, int X, int Y, int width, int height) {
 		super(texture, X, Y, width, height);
-		content = new GLBitmap(gl, Bitmap.createBitmap(width, height, Config.ARGB_8888));
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		content = new GLBitmap(gl,
+		        Bitmap.createBitmap(rect.right - rect.left, rect.bottom - rect.top, Config.ARGB_8888));
+		super.onCreate();
 	}
 
 	@Override
@@ -48,7 +55,8 @@ public class Grid extends GLGUI {
 			objects.get(i).draw();
 		}
 
-		content.loadGLTexture(bgr.getContent(scroll.x, scroll.y, scroll.x + rect.right - rect.left, scroll.y + rect.bottom - rect.top));
+		content.loadGLTexture(bgr.getContent(scroll.x, scroll.y, scroll.x + rect.right - rect.left,
+		        scroll.y + rect.bottom - rect.top));
 	}
 
 }

@@ -1,7 +1,8 @@
 package com.basicengine.graphics.opengl;
 
+import javax.microedition.khronos.opengles.GL10;
+
 import android.graphics.Rect;
-import javax.microedition.khronos.opengles.*;
 
 public class GLRenderObject {
 

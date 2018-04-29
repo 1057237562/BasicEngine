@@ -22,9 +22,6 @@ public class GLGUI extends GLRenderObject {
 	public void draw() {
 		// TODO Auto-generated method stub
 		super.draw();
-		for (GLGUI g : components.toArray(new GLGUI[0])) {
-			g.draw();
-		}
 	}
 
 }
