@@ -36,6 +36,7 @@ public class Grid extends GLGUI {
 		object.gl = bgr.gl10;
 		
 		objects.add(object);
+		RegenerateTexture();
 	}
 	
 	public GL10 getGridGL() {

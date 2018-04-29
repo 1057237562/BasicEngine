@@ -23,7 +23,7 @@ public class GLRenderObject {
 	}
 
 	public void onCreate() {
-		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+		SynchronizePos();
 	}
 
 	public void onClick(float x, float y) {
@@ -37,18 +37,26 @@ public class GLRenderObject {
 	public void setX(int x){
 		rect.right+=x-rect.left;
 		rect.left = x;
+		SynchronizePos();
 	}
 	
 	public void setY(int y){
 		rect.bottom+=y-rect.top;
 		rect.top = y;
+		SynchronizePos();
 	}
 
 	public void setWidth(int w){
 		rect.right = rect.left+w;
+		SynchronizePos();
 	}
 	
 	public void setHeight(int h){
 		rect.bottom = rect.top+h;
+		SynchronizePos();
+	}
+	
+	private void SynchronizePos(){
+		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 	}
 }
