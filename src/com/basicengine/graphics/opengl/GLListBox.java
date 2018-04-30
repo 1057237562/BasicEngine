@@ -1,5 +1,7 @@
 package com.basicengine.graphics.opengl;
 
+import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
+
 public class GLListBox extends Grid {
 
 	public int direction = 0;
@@ -15,8 +17,8 @@ public class GLListBox extends Grid {
 	public static final int DIRECTION_VERTICAL = 0;
 	public static final int DIRECTION_HORIZONTAL = 1;
 
-	public GLListBox(GLBitmap texture, int X, int Y, int width, int height) {
-		super(texture, X, Y, width, height);
+	public GLListBox(GLBitmap texture, int X, int Y, int width, int height, BackGroundRendering bgrz) {
+		super(texture, X, Y, width, height, bgrz);
 		// TODO Auto-generated constructor stub
 	}
 
