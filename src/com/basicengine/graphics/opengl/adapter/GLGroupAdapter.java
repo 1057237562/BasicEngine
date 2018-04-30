@@ -16,7 +16,7 @@ import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 import android.graphics.Bitmap;
 import android.os.Environment;
 
-public class GLGroupAdapter {
+public class GLGroupAdapter { // Must create at Main Thread (Looper Thread)
 
 	public ArrayList<GLRenderObject> objects = new ArrayList<GLRenderObject>();
 	BackGroundRendering bgr = new BackGroundRendering(); // This case Problem
@@ -26,7 +26,7 @@ public class GLGroupAdapter {
 
 	}
 
-	public void BindGrid(GLGroup glGrid) {
+	public void BindGroup(GLGroup glGrid) {
 		bind = glGrid;
 	}
 
@@ -63,7 +63,7 @@ public class GLGroupAdapter {
 		}
 	}
 
-	public GL10 getGridGL() {
+	public GL10 getGL() {
 		return bgr.gl10;
 	}
 
