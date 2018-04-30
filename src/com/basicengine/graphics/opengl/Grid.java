@@ -14,6 +14,7 @@ import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Environment;
 
 public class Grid extends GLGUI {
@@ -21,7 +22,6 @@ public class Grid extends GLGUI {
 	public ArrayList<GLRenderObject> objects = new ArrayList<GLRenderObject>();
 	BackGroundRendering bgr = new BackGroundRendering(); // This case Problem
 	GLBitmap content;
-	Bitmap contents;
 	
 	Point scroll = new Point(0, 0);
 
@@ -36,19 +36,20 @@ public class Grid extends GLGUI {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		//thread.start();
+		super.onCreate();
 		content = new GLBitmap(gl,
 		        Bitmap.createBitmap(rect.right - rect.left, rect.bottom - rect.top, Config.ARGB_8888));
-		super.onCreate();
+		content.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
 	}
 
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
 
-		if (contents != null && !contents.isRecycled()) {
-			content.loadGLTexture(contents);
+		/*if (contents != null && !contents.isRecycled()) {
+			content.loadGLTexture(contents); // Took action
 			contents.recycle();
-		}
+		}*/
 
 		content.draw();
 		super.draw();
@@ -71,7 +72,7 @@ public class Grid extends GLGUI {
 		for (int i = objects.size() - 1; i >= 0; i--) {
 			objects.get(i).draw();
 		}
-		contents = BitmapModifier.flipBitmap(bgr.getContent(0, 0, 512, 512));
+		Bitmap contents = BitmapModifier.flipBitmap(bgr.getContent(0, 0, 512, 512));
 
 		FileOutputStream out = null;
 		File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
@@ -98,7 +99,7 @@ public class Grid extends GLGUI {
 			Looper looper = Looper.myLooper();
 			handler = new Handler(looper) {
 				public void handleMessage(android.os.Message msg) {
-	
+					
 				}
 			};
 	
