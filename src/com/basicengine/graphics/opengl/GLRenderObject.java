@@ -10,6 +10,7 @@ public class GLRenderObject {
 	public GLGameFrame parent;
 	public Rect rect = new Rect(0, 0, 0, 0);
 	public GL10 gl;
+	public Rect parentRect = new Rect(0, 0, 0, 0);
 
 	public GLRenderObject(GLBitmap texture, int X, int Y, int width, int height) {
 		Texture = texture;
@@ -24,6 +25,7 @@ public class GLRenderObject {
 	}
 
 	public void onCreate() {
+		parentRect = new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight());
 		SynchronizePos();
 	}
 
@@ -57,7 +59,7 @@ public class GLRenderObject {
 		SynchronizePos();
 	}
 	
-	private void SynchronizePos(){
-		Texture.setRect(rect, new Rect(0, 0, parent.getMeasuredWidth(), parent.getMeasuredHeight()));
+	public void SynchronizePos() {
+		Texture.setRect(rect, parentRect);
 	}
 }

@@ -8,35 +8,34 @@ import java.util.ArrayList;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.basicengine.graphics.BitmapModifier;
 import com.basicengine.util.memory.graphic.opengl.BackGroundRendering;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Point;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 
 public class Grid extends GLGUI {
 
 	public ArrayList<GLRenderObject> objects = new ArrayList<GLRenderObject>();
-	BackGroundRendering bgr = null; // This case Problem
+	BackGroundRendering bgr = new BackGroundRendering(); // This case Problem
 	GLBitmap content;
+	Bitmap contents;
 	
 	Point scroll = new Point(0, 0);
 
-	public Grid(GLBitmap texture, int X, int Y, int width, int height, BackGroundRendering bgrz) {
+	public Grid(GLBitmap texture, int X, int Y, int width, int height) {
 		super(texture, X, Y, width, height);
 
-		bgr = bgrz;
+		//bgr = bgrz;
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
-		thread.start();
+		//thread.start();
 		content = new GLBitmap(gl,
 		        Bitmap.createBitmap(rect.right - rect.left, rect.bottom - rect.top, Config.ARGB_8888));
 		super.onCreate();
@@ -45,6 +44,12 @@ public class Grid extends GLGUI {
 	@Override
 	public void draw() {
 		// TODO Auto-generated method stub
+
+		if (contents != null && !contents.isRecycled()) {
+			content.loadGLTexture(contents);
+			contents.recycle();
+		}
+
 		content.draw();
 		super.draw();
 	} // Take care of the extends relationship
@@ -52,7 +57,8 @@ public class Grid extends GLGUI {
 
 	public void addRenderObject(GLRenderObject object) {
 		object.gl = bgr.gl10;
-		
+		object.parentRect = rect;
+		object.SynchronizePos();
 		objects.add(object);
 		RegenerateTexture();
 	}
@@ -62,10 +68,29 @@ public class Grid extends GLGUI {
 	}
 
 	public void RegenerateTexture() {
-		handler.sendMessage(new Message());
+		for (int i = objects.size() - 1; i >= 0; i--) {
+			objects.get(i).draw();
+		}
+		contents = BitmapModifier.flipBitmap(bgr.getContent(0, 0, 512, 512));
+
+		FileOutputStream out = null;
+		File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
+		try {
+			out = new FileOutputStream(file);
+			contents.compress(Bitmap.CompressFormat.JPEG, 100, out);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		try {
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		content.loadGLTexture(contents);
 	}
 
-	Handler handler = null;
+	/*Handler handler = null;
 	Thread thread = new Thread() {
 		
 		public void run() {
@@ -73,31 +98,12 @@ public class Grid extends GLGUI {
 			Looper looper = Looper.myLooper();
 			handler = new Handler(looper) {
 				public void handleMessage(android.os.Message msg) {
-					for (int i = objects.size() - 1; i >= 0; i--) {
-						objects.get(i).draw();
-					}
-					Bitmap contents = bgr.getContent(scroll.x, scroll.y, scroll.x + rect.right - rect.left,
-					        scroll.y + rect.bottom - rect.top);
-
-					FileOutputStream out = null;
-					File file = new File(Environment.getExternalStorageDirectory(),
-					        System.currentTimeMillis() + ".jpg");
-					try {
-						out = new FileOutputStream(file);
-						contents.compress(Bitmap.CompressFormat.JPEG, 90, out);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
-					try {
-						out.flush();
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					content.loadGLTexture(contents);
+	
 				}
 			};
+	
+			Looper.loop();
 		};
-	};
+	};*/
 
 }
