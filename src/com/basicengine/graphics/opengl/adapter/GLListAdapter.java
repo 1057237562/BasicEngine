@@ -2,8 +2,6 @@ package com.basicengine.graphics.opengl.adapter;
 
 import com.basicengine.graphics.opengl.GLRenderObject;
 
-import android.graphics.Rect;
-
 public class GLListAdapter extends GLGroupAdapter {
 
 	public int direction = 0;
@@ -24,27 +22,35 @@ public class GLListAdapter extends GLGroupAdapter {
 
 		switch (direction) {
 			case DIRECTION_HORIZONTAL:
-				if (nX + columnWidth > Width) {
+				if (nX + columnWidth > bind.rect.right - bind.rect.left) {
 					nY += rowHeight;
 					nX = 0;
 				}
-				item.X = nX;
-				item.Y = nY;
+				
+				object.rect.right += nX - object.rect.left;
+				object.rect.bottom += nY - object.rect.top;
+				
+				object.rect.left = nX;
+				object.rect.top = nY;
 				nX += columnWidth;
 			break;
 
 			case DIRECTION_VERTICAL:
-				if (nY + rowHeight > Height) {
+				if (nY + rowHeight > bind.rect.bottom - bind.rect.top) {
 					nX += columnWidth;
 					nY = 0;
 				}
-				item.X = nX;
-				item.Y = nY;
+
+				object.rect.right += nX - object.rect.left;
+				object.rect.bottom += nY - object.rect.top;
+
+				object.rect.left = nX;
+				object.rect.top = nY;
 				nY += rowHeight;
 			break;
 		}
 
-		object.rect = new Rect();
+		object.SynchronizePos();
 		super.addRenderObject(object);
 	}
 
@@ -58,18 +64,24 @@ public class GLListAdapter extends GLGroupAdapter {
 			GLRenderObject s = objects.get(i);
 			switch (direction) {
 				case DIRECTION_VERTICAL:
-					s.Y -= rowHeight;
-					if (s.Y < 0) {
-						s.Y += Height; // padding
-						s.X -= columnWidth; // padding
+					s.rect.top -= rowHeight;
+					s.rect.bottom -= rowHeight;
+					if (s.rect.top < 0) {
+						s.rect.top += bind.rect.height();
+						s.rect.bottom += bind.rect.height();// padding
+						s.rect.left -= columnWidth; // padding
+						s.rect.right -= columnWidth;
 					}
 				break;
 
 				case DIRECTION_HORIZONTAL:
-					s.X -= columnWidth;
-					if (s.X < 0) {
-						s.X += Width; // padding
-						s.Y -= rowHeight; // padding
+					s.rect.left -= columnWidth;
+					s.rect.right -= columnWidth;
+					if (s.rect.left < 0) {
+						s.rect.left += bind.rect.width();
+						s.rect.right += bind.rect.width(); // padding
+						s.rect.top -= rowHeight; // padding
+						s.rect.bottom -= rowHeight;
 					}
 				break;
 			}
