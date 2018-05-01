@@ -38,6 +38,17 @@ public class GLGroupAdapter { // Must create at Main Thread (Looper Thread)
 		RegenerateTexture();
 	}
 
+	public void removeRenderObject(GLRenderObject object) {
+		object.gl = null;
+		object.parentRect = null;
+		objects.remove(object);
+		RegenerateTexture();
+	}
+
+	public void removeRenderObject(int index) {
+		removeRenderObject(objects.get(index));
+	}
+
 	public void RegenerateTexture() {
 		for (int i = objects.size() - 1; i >= 0; i--) {
 			objects.get(i).draw();
